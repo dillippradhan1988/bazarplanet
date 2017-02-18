@@ -1,0 +1,24 @@
+<!--<% if (user) { %>
+    <a href="/signout">Sign out</a>
+<% } else { %>
+    <a href="/signup">Signup</a>
+    <a href="/signin">Signin</a>
+<% } %>-->
+<!--<img src="img/avtar.png" alt="Logo">-->
+
+<!--<section>
+    <input type="text" id="text1" ng-model="name">
+    <input type="text" id="text2" ng-model="name">
+</section>-->
+
+<!--<section ng-include="'example/views/example.client.view.html'"></section>-->
+
+<section ng-view></section>
+
+<script type="text/javascript">
+    {{#if user}}
+        window.user = '{{ user }}';
+    {{else}}
+        window.user = null;
+    {{/if}}            
+</script>

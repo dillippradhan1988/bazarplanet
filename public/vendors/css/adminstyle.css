@@ -1,0 +1,58 @@
+/*Pagination*/
+    .custPaginate{
+        margin: 20px 0;
+        text-align: center;
+        background: none;
+    }
+    .custPaginate .disabled,.custPaginate .current{
+        background: none repeat scroll 0 0 #CCCCCC;
+        border-radius: 4px;
+        color: #333333;
+        cursor: pointer;
+        float: left;
+        font-size: 12px;
+        margin: 0 5px;
+        padding: 4px 8px;
+    }
+    .custPaginate span a{
+        background: none repeat scroll 0 0 #CCCCCC;
+        border-radius: 4px;
+        color: #333333;
+        cursor: pointer;
+        float: left;
+        font-size: 12px;
+        margin: 0 5px;
+        padding: 4px 8px;
+    }
+    .custPaginate span a:hover{
+        background: #222222;
+        color: #FFFFFF;
+        text-decoration: none;
+    }
+    .pagination-centered{
+        text-align: center;
+    }
+    .custPaginate .current,.custPaginate .current:hover{
+        background: none repeat scroll 0 0 #666666;
+        color: #FFFFFF;
+        cursor: default;
+    }
+    .custPaginate .disabled,.custPaginate .disabled:hover{
+        background-color: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+        color: #BBBBBB;
+        cursor: default;
+    }
+    
+    .displayNone{
+        display: none;
+    }
+    .headerLogo{
+        font-size: 30px;
+        color: #FFFFFF;
+    }
+    .formError{
+        color: #D65D55;
+    }
+    .error-message{
+        color: #D65D55;
+    }

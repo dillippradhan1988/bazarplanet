@@ -1,0 +1,22 @@
+@media (max-width:768px){
+    .topLinks, .logoPanel, .copyright, .footer .list-inline{
+        text-align: center;
+    }
+    .xsMargin{
+        margin-bottom: 8px;
+    }
+}
+
+@media (min-width:768px){
+    .topLinks, .copyright{
+        text-align: right;
+    }
+}
+
+@media (min-width:992px){
+    
+}
+
+@media (min-width:1200px){
+    
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:ng="http://angularjs.org">
+    <head>
+        <title>Angular Demo</title>
+    </head>
+    <body ng-app="example">
+	
+        <section ng-view></section>
+
+        <script type="text/javascript" src="angular.js"></script>
+		<script type="text/javascript" src="angularroute.js"></script>
+		
+		<script>
+			var angModule	=	angular.module('example', ['ngRoute']);
+			
+			angModule.config(['$locationProvider',
+				function($locationProvider){
+					$locationProvider.hashPrefix('!');
+				}
+			]);
+			
+			angModule.config(['$routeProvider',
+				function($routeProvider){
+					$routeProvider
+						.when('/', {
+							templateUrl: 'ngrouteview.html'
+						})
+						.otherwise({
+							redirectTo: '/'
+						});
+				}
+			]);
+			
+			angModule.controller('exampleController', ['$scope', function($scope){
+				$scope.name	=	'Angular route demo';
+			}]);
+		</script>
+    </body>
+</html>

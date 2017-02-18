@@ -1,0 +1,95 @@
+<section ng-controller='AdController' ng-init="getAdDetail()">
+	<div class="detailTag">
+        <ul id="breadcrumbs-one">
+            <li><a href="#">Back to Result</a></li>           
+            <li ng-if="resp.Ad.locationId">
+                <a href="#">
+                	{{resp.Ad.locationId.locationName}}             	
+                </a>
+            </li>
+            <li ng-if="resp.Ad.categoryId">
+                <a href="/#!/{{resp.Ad.categoryId.catSlugName}}/all">
+                	{{resp.Ad.categoryId.categoryName}}
+                </a>
+            </li> 
+            <li  ng-if="resp.Ad.subCategoryId">
+                <a href="/#!/{{resp.Ad.categoryId.catSlugName}}/{{resp.Ad.subCategoryId.subcatSlugName}}">
+                	{{resp.Ad.subCategoryId.subCategoryName}}
+                </a>
+            </li>            
+        </ul>
+    </div>
+    <div class="col-sm-8 col-md-8 margine20top">
+        <div class="panel panel-info">
+          <div class="panel-heading">            
+            <h3 class="panel-title">
+                <a href="">
+                    {{resp.Ad.addTitle}}
+                </a>
+            </h3>            
+          </div>
+          <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3 allSides" auto-scroll>
+                    <dl>   
+                    	<div ng-repeat="(key,val) in resp.AdChild">
+                    		<dt>{{key}}</dt>
+                            <dd>{{val}}</dd>
+                    	</div>
+                    	<div ng-if="resp.Ad.cityId">
+                    		<dt>City</dt>
+                    		<dd>{{resp.Ad.cityId.cityName}}</dd>
+                    	</div>
+                    	<div ng-if="resp.Ad.locationId.locationName">
+                    		<dt>Location</dt>
+                    		<dd>{{resp.Ad.locationId.locationName}}</dd>
+                    	</div>
+                    </dl>
+                </div>
+                <div class="col-md-7 allSides">
+                    <img ng-src="{{resp.Ad.imgSrc}}" class="img-responsive" title="{{resp.Ad.addTitle}}">                  
+                </div>
+                <div class="col-md-2 allSides" auto-scroll>                                            
+                    <p ng-repeat="photo in resp.Ad.photoListArr">
+                        <a class="group1" href="javascript:void(0);">
+                        	<img ng-src="/vendors/uploads/adphoto/job/thumb125_120/{{photo}}" class="img-responsive" title="{{resp.Ad.addTitle}}">
+                        </a>
+                    </p>                            
+                </div>
+            </div>
+
+            <div class="row margine10top">
+                <div class="col-sm-8 col-md-8"><strong class="fs16 text-primary">AD Details</strong></div>
+                <div class="col-sm-4 col-md-4" align="right"><strong class="text-success">Posted On :</strong>
+                    {{resp.Ad.addPostedDt}}
+                </div>
+            </div>
+            <hr>
+            
+            <div ng-bind-html="resp.Ad.description | to_trusted"></div> 
+
+            <div align="right">
+                 <strong>No of Visitors :</strong> {{resp.Ad.noOfVisitotor}}
+            </div>
+          </div>
+          </div>
+
+        <h4>Recommended Technical Jobs</h4>
+        <div class="gray_bx"><span class="text-danger">No simmilar Ad found.</span></div>
+
+    </div>
+    
+    <div class="col-sm-4 col-md-4 margine20top">
+        <a href="javascript:void(0);" class="btn btn-warning">
+        	<i class="fa fa-mail-reply-all fa-fw"></i> 
+        	Reply to this ad
+        </a>        
+        <p>
+	        <a href="#" class="btn btn-link">
+	        	<i class="fa fa-star-o fa-fw"></i> 
+	        	Added in Bookmark
+	        </a>
+        </p>
+    </div>    
+        
+</section>

@@ -1,0 +1,6 @@
+<a>
+	<div>
+	    <span style="display:block;" class="registration" ng-bind-html="match.model.cityName | uibTypeaheadHighlight:query"></span>
+	    <span ng-show="ngCityflg" ng-bind-html="trustAsHtml(match.model._id | uibTypeaheadHighlight:query)"></span>  
+	</div>
+</a>

@@ -1,0 +1,17 @@
+var str = "Some error occured please try againcontact your Administrator";
+//console.log(str.replace(/ /g,"-"));
+
+var arr = ["Zero","One","Two"];
+//console.log(arr.join(","));
+
+var stid = 1+'d46^!2?';
+var enc = btoa(btoa(stid));
+//console.log(enc);
+var dec = atob(atob(enc)).replace('d46^!2?','');
+//console.log(dec);
+var models_path = __dirname + '/app/models';  
+fs.readdirSync(models_path).forEach(function(file) {  
+    if (file.substring(-3) === '.js') {
+        require(models_path + '/' + file);
+    }
+});

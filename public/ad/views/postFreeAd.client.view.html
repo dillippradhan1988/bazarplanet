@@ -1,0 +1,224 @@
+<section ng-controller='AdController'>
+    <div class="col-sm-3 col-md-3">
+        <h2>Select a category</h2>
+        <div class="accodian_panel " ng-repeat="category in catSubCatList">
+            <a href="javascript:void(0);" ng-click="showSubCategory($index+1)" >
+                <span class="spritimg {{category.catSlugName}}">
+                    <div class="pad10left pad12top cat_name">{{category.categoryName}}</div>
+                </span>
+            </a>        
+            <div class="accDtl" ng-show="subCatDiv{{$index+1}}">
+                <ul class="acc_bullets list-unstyled">                    
+                    <li ng-repeat="subCategory in category.subCategoryList">
+                        <a ng-click="getAdForm(category.catSlugName,subCategory.subcatSlugName)" href="javascript:void(0);" onclick="javascript:void(0);" ondblclick="javascript:void(0);" title="{{subCategory.subCategoryName}}">{{subCategory.subCategoryName}}</a>                                 
+                    </li>                    
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-9 col-md-9" ng-init="getAdForm('','')">
+        <h2>Post an Ad in just 30 seconds</h2>
+        <div class="gray_bx">
+            <p>Please DO NOT post multiple ads for the same items or service. All duplicate, spam and wrongly categorized ads will be deleted.</p>
+            <p align="right" class="text-danger">* Fields are Mandatory.</p>
+            <form class="form-horizontal" role="form" name="postAdFrm" novalidate>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Selected Category</label>
+                    <div class="col-sm-9 pad8top">
+                        <span class="text-primary">{{catName}}</span> > <span class="text-success">{{subCatName}}</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Title for your Ad <span class="text-danger">*</span></label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="addTitle" placeholder="Title for your Ad" name="addTitle"  ng-model="Add.addTitle" required>
+
+                        <div ng-show="postAdFrm['addTitle'].$invalid">
+                            <div class="error-message" ng-show="postAdFrm['addTitle'].msg">{{postAdFrm['addTitle'].msg}}</div>
+                            <div class="error-message" ng-show="postAdFrm.addTitle.$dirty && !postAdFrm['addTitle'].msg">This field is required.
+                            </div>              
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Photo</label>
+                    <div class="col-sm-9">
+                        <input type="file" multiple file-input>         
+                    </div>
+                </div>
+                <div class="form-group" ng-show="priceFlag">
+                    <label class="col-sm-3 control-label">Price</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="price" autocomplete="off" class="form-control" name="price"  ng-model="Add.price">                        
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="form-group" ng-repeat="postPage in postAdForm.postPage">
+                    <label class="col-sm-3 control-label"  data-errkey="{{ elementkey = postPage.elementId }}"><span class="text-danger" ng-show="postPage.requiredFlag">*</span> {{postPage.labelName}}</label>
+
+                    <div class="col-sm-9" ng-if="postPage.inputTypeId == 1 || postPage.inputTypeId == 2">
+                        <input type="text"  autocomplete="off" class="form-control" name="{{postPage.elementId}}" ng-model="addChild.customfields[postPage.elementId]" ng-required="postPage.requiredFlag">
+                        
+                        <div ng-if="postPage.requiredFlag" ng-show="postAdFrm['{{postPage.elementId}}'].$invalid">
+                            <div class="error-message" ng-show="postAdFrm['{{postPage.elementId}}'].msg">
+                                {{postAdFrm[elementkey].msg}}
+                            </div>
+                            <div class="error-message" ng-show="postAdFrm.{{postPage.elementId}}.$dirty && !postAdFrm['{{postPage.elementId}}'].msg">This field is required.
+                            </div>           
+                        </div>
+                    </div>
+
+                    <div class="col-sm-9" ng-if="postPage.inputTypeId == 3">
+                        <select class="form-control" autocomplete="off" name="{{postPage.elementId}}" ng-model="addChild.customfields[postPage.elementId]"  ng-options="c.id as c.value for c in postPage.optionsArr"  ng-required="postPage.requiredFlag">
+                            <option value="">Select</option>
+                        </select> 
+
+                        <div ng-if="postPage.requiredFlag" ng-show="postAdFrm['{{postPage.elementId}}'].$invalid">
+                            <div class="error-message" ng-show="postAdFrm['{{postPage.elementId}}'].msg">
+                                {{postAdFrm[elementkey].msg}}
+                            </div>
+                            <div class="error-message" ng-show="postAdFrm.{{postPage.elementId}}.$dirty && !postAdFrm['{{postPage.elementId}}'].msg">This field is required.
+                            </div>           
+                        </div>                   
+                    </div>
+
+                    <div class="col-sm-9" ng-if="postPage.inputTypeId == 4 ">
+                        <label class="radio-inline" ng-if="catId == 1 && postPage.elementId == 'adType'" ng-repeat="radObj in postPage.optionsArr">
+                            <input type="radio" name="{{postPage.elementId}}" ng-model="addChild.customfields[postPage.elementId]" value="{{radObj.id}}" ng-click="setCompnyFlg(radObj.value)" ng-required="postPage.requiredFlag">  {{radObj.value}}
+                        </label>
+                        <label class="radio-inline" ng-if="catId != 1" ng-repeat="radObj in postPage.optionsArr">
+                            <input type="radio" name="{{postPage.elementId}}" ng-model="addChild.customfields[postPage.elementId]" value="{{radObj.id}}" ng-required="postPage.requiredFlag">  {{radObj.value}}
+                        </label>
+                        
+                        <div ng-if="postPage.requiredFlag" ng-show="postAdFrm['{{postPage.elementId}}'].$invalid">
+                            <div class="error-message" ng-show="postAdFrm['{{postPage.elementId}}'].msg">
+                                {{postAdFrm[elementkey].msg}}
+                            </div>
+                            <div class="error-message" ng-show="postAdFrm.{{postPage.elementId}}.$dirty && !postAdFrm['{{postPage.elementId}}'].msg">This field is required.
+                            </div>        
+                        </div>
+                        <!--{{addChild.customfields[postPage.elementId]}}
+                        <button ng-click="changeRad()">click</button>-->
+                    </div>
+
+                    <div class="col-sm-9" ng-if="postPage.inputTypeId == 5">
+                        <div>
+                            <span ng-repeat="chbxObj in postPage.optionsArr">
+                                <input type="checkbox" name="{{postPage.elementId}}" ng-model="addChild.customfields[postPage.elementId][chbxObj.value]"  ng-change="checkBoxValid(addChild.customfields[postPage.elementId])" ng-true-value="'Yes'" ng-false-value="'No'"  ng-required="postPage.requiredFlag && cbxFlg"> {{chbxObj.value}} 
+                            </span>
+                        </div>                        
+
+                        <div ng-if="postPage.requiredFlag && cbxFlg" ng-show="postAdFrm['{{postPage.elementId}}'].$invalid">
+                            <div class="error-message" ng-show="postAdFrm['{{postPage.elementId}}'].msg">
+                                {{postAdFrm[elementkey].msg}}
+                            </div>
+                            <div class="error-message" ng-show="postAdFrm.{{postPage.elementId}}.$error.required && !postAdFrm['{{postPage.elementId}}'].msg">
+                                This field is required.
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+
+
+
+
+
+                <div class="form-group" ng-show="compnyFlg">
+                    <label class="col-sm-3 control-label">Company Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="companyName" autocomplete="off" class="form-control" name="companyName" ng-model="addChild.customfields['companyName']">                        
+                    </div>
+                </div>
+                <div class="form-group" ng-if="authentication.user.roleId != 1">
+                    <label class="col-sm-3 control-label">City</label>
+                    <div class="col-sm-9">
+                        <input ng-if="cityDtlObj.cityId" id="cityId" autocomplete="off" class="form-control" name="cityId" type="text" ng-model="Add.cityId">
+                        <input ng-if="!cityDtlObj.cityId" id="cityId" autocomplete="off" class="form-control" name="cityId" type="text" ng-model="Add.cityId">                       
+                    </div>
+                </div>
+                <div class="form-group" ng-if="authentication.user.roleId != 1">
+                    <label class="col-sm-3 control-label">Area</label>
+                    <div class="col-sm-9">
+                        <input id="locationId" autocomplete="off" class="form-control" name="locationId" type="text" ng-model="Add.locationId">                       
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Description</label>
+                    <div class="col-sm-9">
+                        <textarea autocomplete="off" class="form-control" rows="4" name="description" cols="50" ng-model="Add.description"></textarea>   
+                        <div ng-show="postAdFrm['description'].$invalid">
+                            <div class="error-message" ng-show="postAdFrm['description'].msg">{{postAdFrm['description'].msg}}</div>
+                            <div class="error-message" ng-show="postAdFrm.description.$dirty && !postAdFrm['description'].msg">This field is required.
+                            </div>              
+                        </div>                   
+                    </div>
+                </div>
+
+
+
+                <h4 class="text-primary">Buyer Information</h4>
+                <hr>                               
+                <div class="form-group"  ng-if="authentication.user.roleId != 1">
+                    <label class="col-sm-3 control-label">You Are <span class="text-danger">*</span></label>
+                    <div class="col-sm-9">
+                        <label class="radio-inline">
+                            <input name="sellerType" type="radio" value="Indivisual" ng-model="Add.sellerType" required> Indivisual
+                        </label>
+                        <label class="radio-inline">
+                            <input name="sellerType" type="radio" value="Other" ng-model="Add.sellerType" required> Other 
+                        </label>
+                        <div ng-show="postAdFrm['sellerType'].$invalid">
+                            <div class="error-message" ng-show="postAdFrm['sellerType'].msg">{{postAdFrm['sellerType'].msg}}</div>
+                            <div class="error-message" ng-show="postAdFrm.sellerType.$dirty && !postAdFrm['sellerType'].msg">This field is required.
+                            </div>              
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group"  ng-if="authentication.user.roleId != 1">
+                    <label class="col-sm-3 control-label">Your Name</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" name="sellerName" type="text" ng-model="Add.sellerName">              
+                    </div>
+                </div>               
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Your Email <span class="text-danger">*</span></label>
+                    <div class="col-sm-9">
+                        <input class="form-control" name="sellerEmail" type="text" ng-model="Add.sellerEmail">
+                        <div ng-show="postAdFrm['sellerEmail'].$invalid">
+                            <div class="error-message" ng-show="postAdFrm['sellerEmail'].msg">{{postAdFrm['sellerEmail'].msg}}</div>
+                            <div class="error-message" ng-show="postAdFrm.sellerEmail.$dirty && !postAdFrm['sellerEmail'].msg">This field is required.
+                            </div>              
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Your Mobile No.</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" name="sellerMobile" type="text" ng-model="Add.sellerMobile">
+                    </div>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input name="addAlert" type="checkbox" value="Y" ng-model="Add.addAlert">
+                    Click here to get this type of Add Alerts.
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input name="privacyPolicy" type="checkbox" value="Y" ng-model="Add.privacyPolicy">
+                     <a href="#">Terms of Use</a> &amp; <a href="#">Privacy Policy</a>
+                  </label>
+                </div>
+                <div align="center">
+                    <button id="saveAdBtn" class="btn btn-success" ng-click="savePostAd()" ondblclick="javascript:void(0);" type="button"><i class="fa fa-envelope fa-fw" ng-disabled="postAdFrm.$invalid"></i> Post Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

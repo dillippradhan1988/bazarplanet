@@ -1,0 +1,42 @@
+@font-face {
+  font-family: 'Pacifico';
+  src: url('pacifico.eot');
+  src: url('pacifico.eot?#iefix') format('embedded-opentype'),
+       url('pacifico.woff') format('woff'),
+       url('pacifico.ttf') format('truetype'),
+       url('pacifico.svg#Pacifico') format('svg');
+}
+
+#disqus_thread{margin-top:20px;}
+*{-moz-box-sizing:border-box;box-sizing:border-box;}
+.blue{background:#EBE7E7;color:#fff;}
+.blue h3{border-radius:10px;background:#fff;color:#8d8d8d;font-size:12px;line-height:15px;margin:5px 10px;padding:0px;position:relative;text-align:center;}
+.button{background:#3498db;color:#fff;display:block;font-size:16px;margin:20px auto;padding:20px;text-align:center;text-decoration:none;width:48%;}
+.buttons{padding:0 20px 20px; margin-bottom: 10px;}
+.buttons .button{background:#FFF;color:#3498db;float:left;margin:5px;}
+.center .slick-center h3{-moz-transform:scale(1.08);-ms-transform:scale(1.08);-o-transform:scale(1.08);-webkit-transform:scale(1.08);color:#e67e22;opacity:1;transform:scale(1.08);}
+.center h3{opacity:0.8;transition:all 300ms ease;}
+.content{margin:auto;padding:0px 12px;width:600px;}
+.content:after,.buttons::after{clear:both;content:"";display:table;}
+
+@media (max-width: 768px) {
+.blue h3{font-size:24px;}
+.button{margin:0 auto 20px;width:auto;}
+.button.first{margin-top:40px;}
+.buttons{padding:0 0 20px;}
+.buttons .button{float:left;font-size:12px;margin:1%;width:48%;}
+.center{margin-left:-40px;margin-right:-40px;}
+.center .slick-center h3{-moz-transform:scale(1);-ms-transform:scale(1);-o-transform:scale(1);-webkit-transform:scale(1);color:#e67e22;opacity:1;transform:scale(1);}
+.center h3{-moz-transform:scale(0.95);-ms-transform:scale(0.95);-o-transform:scale(0.95);-webkit-transform:scale(0.95);opacity:0.8;transform:scale(0.95);transition:all 300ms ease;}
+.content{margin:auto;padding:20px 40px;width:auto;}
+.fixed-header .header-content{width:auto;}
+}
+.bradCumbDv{
+  background: #FFFFFF;color:#3498DB;border-bottom: 2px solid #EBE7E7;
+}
+.bradCumbDvInnTop{
+  padding: 2px 2px;font-weight: bold;font-size: 13px;color:#777171;
+}
+.bradCumbDvInnBot{
+  padding: 2px 2px;font-size: 13px;color:#464646;font-weight: normal;
+}

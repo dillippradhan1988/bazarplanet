@@ -1,0 +1,24 @@
+<section ng-controller='AdController' ng-init="getCatSubCat()">
+    <div class="col-sm-3 col-md-3">
+        <h2>Select a category</h2>
+        <div class="list-group listGroupCategory">            
+            <a ng-repeat="cat in catSubCatList" ng-mouseover="showSubCategory($index+1)" href="javascript:void(0);" class="list-group-item addCatList{{$index+1}} ?>">
+                {{cat.categoryName}}
+            </a>             
+        </div>
+    </div>
+    <div class="col-sm-9 col-md-9">
+        <h2>Select Subcategory</h2>
+        <div class="gray_bx">            
+            <div ng-repeat="cat in catSubCatList" ng-show="subCatDiv{{$index+1}}" class="prodSubCatagory prodSubCat{{$index+1}}" >
+                <ul>   
+                    <li ng-repeat="subCat in cat.subCategoryList">
+                        <a ng-click="goToPostAd(cat.catSlugName,subCat.subcatSlugName)" href="javascript:void(0);">
+                            <span>{{subCat.subCategoryName}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div> 
+        </div>
+	</div>
+</section>

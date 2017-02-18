@@ -1,0 +1,12 @@
+<section ng-view></section>
+
+<script type="text/javascript">
+    {{#if user}}
+        window.user 				= 	{{{ user }}};        
+    {{else}}
+        window.user = null;        
+    {{/if}}      
+    
+    window.categoryListObjArr 	= 	{{{ categoryListObjArr }}};
+    window.bzrplnt				=	{{{ bzrplnt }}};      
+</script>

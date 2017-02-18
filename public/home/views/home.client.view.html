@@ -1,0 +1,191 @@
+  <section ng-init="getCategoryList()">
+    <!--<div data-ng-show="!authentication.user">
+            <a href="/signup">Signup</a>
+            <a href="/signin">Signin</a>
+        </div>
+        <div data-ng-show="authentication.user">
+            <h1>Hello <span data-ng-bind="authentication.user.username"></span></h1>
+            <a href="/signout">Signout</a>
+            <ul>
+                <li><a href="/#!/chat">Chat</a></li>
+                <li><a href="/#!/articles">List Articles</a></li>
+                <li><a href="/#!/articles/create">Create Article</a></li>
+            </ul>
+        </div>
+    -->
+
+    <div class="col-sm-9 col-md-9">
+        <div class="row">
+            <div id="cat-subcat-list" class="col-sm-8 col-md-8 margine10bot">
+                <div class="col-sm-8 col-md-8">
+                    <h2>Choose Your Category</h2>
+                </div>                
+                <div class="col-sm-4 col-md-4">
+                    <a class="btn btn-warning btn-block postAddBtn" href="/#!/choosecategory"><i class="fa fa-hand-o-right"></i> POST ADD</a>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 home_menu">
+                        <div class="accodian_panel " ng-repeat="category in home.categoryListLft"  data-catId="{{ catIdx = $index+1 }}">
+                            <a href="javascript:void(0);" ng-click="showSubCategory($index+1)" >
+                                <span class="spritimg {{category.catSlugName}}">
+                                    <div class="pad10left pad12top cat_name">{{category.categoryName}}</div>
+                                </span>
+                            </a>        
+                            <div class="accDtl" ng-show="subCatDiv{{$index+1}}">
+                                <ul class="acc_bullets list-unstyled">                    
+                                    <li ng-repeat="subCategory in category.subCategoryList"  data-subCatId="{{ subCatIdx = $index+1 }}">
+                                        <a href="javascript:void(0);" ng-click="setAdListFilter(category._id,subCategory._id,category.catSlugName,subCategory.subcatSlugName)" ondblclick="javascript:void(0);" title="{{subCategory.subCategoryName}}">{{subCategory.subCategoryName}}</a>
+                                    </li>                    
+                                </ul>
+                            </div>
+                        </div>                        
+                    </div>
+
+                    <div class="col-sm-6 col-md-6 home_menu">
+                        <div class="accodian_panel " ng-repeat="category in home.categoryListRgt" data-catId="{{ catIdx = $index+6 }}">
+                            <a href="javascript:void(0);" ng-click="showSubCategory($index+6)" >
+                                <span class="spritimg {{category.catSlugName}}">
+                                    <div class="pad10left pad12top cat_name">{{category.categoryName}}</div>
+                                </span>
+                            </a>        
+                            <div class="accDtl" ng-show="subCatDiv{{$index+6}}">
+                                <ul class="acc_bullets list-unstyled">                    
+                                    <li ng-repeat="subCategory in category.subCategoryList"  data-subCatId="{{ subCatIdx = $index+6 }}">
+                                        <a href="javascript:void(0);" ng-click="setAdListFilter(category._id,subCategory._id,category.catSlugName,subCategory.subcatSlugName)" ondblclick="javascript:void(0);" title="{{subCategory.subCategoryName}}">{{subCategory.subCategoryName}}</a>
+                                    </li>                    
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4 col-md-4">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><span class="text-danger">New!</span> Create your personalized Alert!</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal" role="form" name="adAlertFrm" novalidate>
+                            <div class="form-group" id="catErrorDV">                                           
+                                <select id="categoryId" class="form-control" name="categoryId" ng-model="AdAlert.categoryId" ng-options="c._id as c.categoryName for c in categories" ng-change="getSubcategoryList()" required>
+                                    <option value="">Select</option>
+                                </select>
+                                <div class="error-message" ng-show="frmErrorFlg && adAlertFrm.categoryId.$error.required">
+                                    This field is required
+                                </div>    
+                            </div>
+                            <div class="form-group">
+                                <select id="subCategoryId" class="form-control" name="subCategoryId" ng-model="AdAlert.subCategoryId" ng-options="c._id as c.subCategoryName for c in subCategories" ng-change="getAlertFieldList()" required>
+                                    <option value="">Select</option>
+                                </select>
+                                <div class="error-message" ng-show="frmErrorFlg && adAlertFrm.subCategoryId.$error.required">
+                                    This field is required
+                                </div>        
+                            </div>
+                            <div class="form-group">
+                                <select id="alertType" class="form-control" name="alertType" ng-model="AdAlert.alertType" ng-options="c.id as c.val for c in alertFields" required>
+                                    <option value="">Select</option>
+                                </select>
+                                <div class="error-message" ng-show="frmErrorFlg && adAlertFrm.alertType.$error.required">
+                                    This field is required
+                                </div>
+                            </div>
+                            <div class="form-group" id="alertCitySpnError">
+                                <input id="cityId" class="form-control" autocomplete="off" placeholder="Type City name" name="cityId" type="text" ng-model="AdAlert.cityId" required>
+                                <div class="error-message" ng-show="frmErrorFlg && adAlertFrm.cityId.$error.required">
+                                    This field is required
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                 <input id="alertEmail" class="form-control" autocomplete="off" placeholder="Enter E-mail ID" name="alertEmail" type="text" ng-model="AdAlert.alertEmail" required>
+                                 <div class="error-message" ng-show="frmErrorFlg && adAlertFrm.alertEmail.$error.required">
+                                    This field is required
+                                </div>       
+                             </div>
+                            <div class="form-group">
+                                 <input class="form-control" autocomplete="off" placeholder="Enter Mobile No." maxlength="10" name="alertMobile" type="text" ng-model="AdAlert.alertMobile">  
+                                       
+                             </div>
+                            <button id="saveAdBtn" class="btn btn-success btn-block" ng-click="saveAdAlert()" ondblclick="javascript:void(0);" type="button">
+                              Submit
+                            </button>   
+                        </form>
+                    </div>                      
+                </div>
+            </div>
+        </div>
+
+        <h2>Popular Cities</h2>
+        <div class="popularPanel pad10">
+            <div class="row">
+                <div class="col-xs-6 col-sm-2 col-md-2">
+                    <ul class="list-unstyled">
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(1485);" ondblclick="javascript:void(0);">Agra</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Ahmedabad</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Aligarh</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Allahabad</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Amritsar</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Asansol Mc</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Bareilly</a></li>                        
+                    </ul>
+                </div>
+                <div class="col-xs-6 col-sm-2 col-md-2">
+                    <ul class="list-unstyled">
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Belgaum</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Bhagalpur</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Bhopal</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Bhubaneswar</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Bikaner</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Chandigarh</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-6 col-sm-2 col-md-2">
+                    <ul class="list-unstyled">
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Coimbatore</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Dehradun</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Delhi</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Dhanbad</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Ghaziabad</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Gurgaon</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Howrah</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-6 col-sm-2 col-md-2">
+                    <ul class="list-unstyled">
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Jammu</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Kolkata</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Ludhiana</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Rajkot</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Ranchi</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Thane</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Tirupati</a></li>                        
+                    </ul>
+                </div>
+                <div class="col-xs-6 col-sm-2 col-md-2">
+                    <ul class="list-unstyled">
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Chennai</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Hyderabad</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Varanasi</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Vijayawada</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Vizianagaram</a></li>
+                        <li><a href="javascript:void(0);" onclick="goToSelectedCityHome(4295);" ondblclick="javascript:void(0);">Warangal</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-3"> 
+        <div owl-carousel class="owl-theme slider" slide-speed="300" pagination-speed="400">     
+            <div class="item"><img src="vendors/img/maruti1.jpg" width="230" height="250" alt=""></div>
+            <div class="item"><img src="vendors/img/maruti2.jpg" width="230" height="250" alt=""></div>
+            <div class="item"><img src="vendors/img/maruti3.jpg" width="230" height="250" alt=""></div>
+        </div>
+        <div owl-carousel class="owl-theme slider margine20top">     
+            <div class="item"><img src="vendors/img/camera.jpg" width="230" height="250" alt=""></div>
+            <div class="item"><img src="vendors/img/home.jpg" width="230" height="250" alt=""></div>
+            <div class="item"><img src="vendors/img/job.jpg" width="230" height="250" alt=""></div>
+        </div>
+    </div>
+    
+</section>

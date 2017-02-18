@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:ng="http://angularjs.org">
+    <head>
+        <title>Angular Demo</title>
+    </head>
+    <body ng-app=mean>
+        
+        <section ng-view></section>
+		
+		<script>
+			window.user		=	{ 'fullName': 'Dillip Pradhan' };
+		</script>
+        <script type="text/javascript" src="angular.js"></script>
+		<script type="text/javascript" src="angularroute.js"></script>
+		<script type="text/javascript" src="../../lib/angular-resource/angular-resource.js"></script>
+		<script>
+		
+			angular.module('example', []);
+			
+			angular.module('example').controller('exampleController', ['$scope', 'Authentication', function($scope, Authentication){
+				$scope.name	=	Authentication.user ? Authentication.user.fullName : 'MEAN Application';
+			}]);
+			
+			angular.module('example').config(['$routeProvider',
+				function($routeProvider){
+					$routeProvider
+						.when('/', {
+							templateUrl: 'mainview.html'
+						})
+						.otherwise({
+							redirectTo: '/'
+						});
+				}
+			]);
+			
+			angular.module('users', []);
+			
+			angular.module('users').factory('Authentication', [
+				function(){
+					this.user = window.user;
+					
+					return {
+						user: this.user
+					};
+				}
+			]);
+			
+			var mainApplicationModuleName                   =   'mean';
+			var mainModule									=	angular.module(mainApplicationModuleName, ['ngRoute', 'users', 'example']);
+			
+			mainModule.config(['$locationProvider',
+				function($locationProvider){
+					$locationProvider.hashPrefix('!');
+				}
+			]);
+			
+			/*angular.element(document).ready(function() {
+				angular.bootstrap(document, [mainApplicationModuleName]);
+			});*/
+		</script>
+    </body>
+</html>

@@ -1,0 +1,148 @@
+<section ng-controller='AdController'>
+	<div class="col-sm-3 col-md-3" ng-init="setSesCatSubCat()">
+        <h4>Filter your Result</h4>
+        <ul class="all_cat_ul all_cat_ul_main list-unstyled">           
+            <li>
+            	<a href="/#!/ad" onclick="javascript:void(0);" class="allCat"><strong>All Category</strong>
+            </a>                       
+            <li class="margine10left" ng-repeat="category in catSubCatList" data-catId="{{ catIdx = category._id }}">
+                <a href='javascript:void(0);' class="cat-list" ng-class="catSubCatUlLi.catTxtDsbld['txtDsbld{{catIdx}}']" ng-click="setAdListFilter(category._id,0,category.catSlugName,'all')" id="{{category.catSlugName}}" ><span>{{category.categoryName}}</span></a>
+                <ul class="all_sub_cat_ul list-unstyled  {{category.catSlugName}}" ng-class="catSubCatUlLi.catTxtNone['txtNone{{catIdx}}']">
+                    <li ng-repeat="subCategory in category.subCategoryList" data-subCatId="{{ subCatIdx = subCategory._id }}">
+                    	<a href='javascript:void(0);' ng-click="setAdListFilter(category._id,subCategory._id,category.catSlugName,subCategory.subcatSlugName)" ng-class="catSubCatUlLi.subCatTxtDsbld['txtDsbld{{subCatIdx}}']" id="{{subCategory.subcatSlugName}}"><span>{{subCategory.subCategoryName}}</span></a>
+                    </li>
+                </ul>
+            </li>      
+        </ul>
+
+
+
+        <form id="adFilterFrm" name="adFilterFrm" >
+            <div ng-repeat="adAssocFilter in resp.adAssocModelFilter">
+            	<h4>{{adAssocFilter.labelName}}</h4>
+                <div class="gray_bx">
+                    <div auto-scroll class="located_panel {{adAssocFilter.heightCls}}"> 
+                    	<div ng-repeat="adAssocFilterOption in adAssocFilter.optionsArr">
+                    		<div ng-if="adAssocFilter.inputTypeId == '4'">
+    	                		<input type="radio" name="{{adAssocFilter.elementId}}" ng-model="addChildFilter.customfields[adAssocFilter.elementId]" value="{{adAssocFilterOption.value}}"  ng-click="getAdListResult()">  {{adAssocFilterOption.value}}
+    	                	</div>
+    	                	<div ng-if="adAssocFilter.inputTypeId == '3' || adAssocFilter.inputTypeId == '5'">
+    	                		<!--<input type="checkbox" name="{{adAssocFilter.elementId}}" ng-model="addChildFilter.customfields[adAssocFilter.elementId][adAssocFilterOption.value]" ng-true-value="'Yes'" ng-false-value="'No'" ng-click="getAdListResult()"> {{adAssocFilterOption.value}} -->
+                                <input type="checkbox" name="{{adAssocFilter.elementId}}" ng-model="addChildFilter.customfields[adAssocFilter.elementId][adAssocFilterOption.value]" ng-true-value="'Yes'" ng-false-value="'No'" ng-click="getCheckedFilter()"> {{adAssocFilterOption.value}}
+                                
+    	                	</div>
+                    	</div>                	
+                    </div>
+                </div>
+            </div>
+
+            <h4>Location</h4>
+            <div class="gray_bx">
+                <div class="located_panel <?php if($filterPaneHeight == '120px')echo 'autoScroll'; ?>" style="height:'120px';">
+                    
+                </div>
+            </div>
+            
+            <div ng-repeat="adFilter in resp.adFilter">
+            	<h4>{{adFilter.labelName}}</h4>
+                <div class="gray_bx">
+                    <div auto-scroll class="located_panel {{adFilter.heightCls}}"> 
+                    	<div ng-repeat="adFilterOption in adFilter.optionValue">
+                    		<div ng-if="adFilter.inputType == 'radio'">
+    	                		<input type="radio" name="{{adFilter.dbLabelName}}" ng-model="AddFilter.customfields[adFilter.dbLabelName]" value="{{$index}}" ng-click="getAdListResult()">  {{adFilterOption}}
+    	                	</div>
+    	                	<div ng-if="adFilter.inputType == 'checkbox'">
+    	                		<input type="checkbox" name="{{adFilter.dbLabelName}}" ng-model="AddFilter.customfields[adFilter.dbLabelName][$index]"  ng-change="checkBoxValid(addChild.customfields[adFilter.dbLabelName])" ng-true-value="'Yes'" ng-false-value="'No'"  ng-click="setPostedDate()"> {{adFilterOption}} 
+    	                	</div>
+                    	</div>                	
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div class="col-sm-9 col-md-9 margine35top pad5top">
+        <div class="row" style="display: none;">
+            <!-- listing top banner -->
+            <ins class="adsbygoogle"
+                 style="display:inline-block;width:728px;height:90px"
+                 data-ad-client="ca-pub-9442405043666227"
+                 data-ad-slot="5144746994">
+             </ins>
+        </div>
+        <!--<div class="pagingPanel">            
+            <div class="row">                
+                <div class="col-sm-7 col-md-7 pagingText">Page 1 of 1, showing 2 records out of 2 total</div>
+                <div class="col-sm-5 col-md-5" align="right">
+                    <ul class="pagination">
+                        <li><a href="#"><span aria-hidden="true"><i class="fa fa-angle-double-left"></i></span><span class="sr-only">Previous</span></a></li>
+                        <li><a href="#"><span aria-hidden="true"><i class="fa fa-angle-double-right"></i></span><span class="sr-only">Next</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>    
+        <div align="right">
+            <a href="#" class="btn btn-link">Price Date</a>
+        </div>-->
+        <div id="tiles" class="blockUiDv adListing">
+            <div class="panel panel-warning" ng-repeat="ad in adListObj">
+                <div class="panel-heading">
+                  <h3 class="panel-title font25"><a href="/#!/{{ad.adTitleUrl}}" title="{{ad.addTitle}}">{{ad.addTitleShort}}</a></h3>
+                </div>
+                <div class="panel-body categoryViewPanel">
+                    <div class="row">
+                        <a href="/#!/{{ad.adTitleUrl}}" title="{{ad.addTitle}}" class="listingLink">
+                            <div class="col-md-7">
+                               <p>    
+                                    <img ng-src="{{ ad.imgSrc }}" class="img-thumbnail pull-left" width="120" height="120">
+                                    {{ad.description}}
+                                    <div style="margin-left: 135px;" class="margine10top">
+                                    In : {{ad.cityId.cityName}} | Posted By :{{ad.sellerType}}</div>
+                               </p>                               
+                            </div>        
+                            <div class="col-md-3">
+                                <p class="price" ng-if="ad.price">
+                                    Rs. {{ad.price}}/-
+                                </p>
+                            </div>
+                        </a>
+                        <div class="col-md-2">
+                            <p ng-if="ad.price">{{ad.addPostedDt}}</p>
+                            <a class="btn btn-warning btn-block"  data-toggle="modal" data-target="#adCommentFrm"  href="#">
+                                Reply
+                            </a>
+                        </div>
+                    </div>
+                </div>                  
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="adCommentFrm" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">Sign In</h4>
+                </div>
+                <div class="modal-body">
+
+                        <input type="hidden" name="otherMsg" class="otherMsg"/>
+                        <div class="form-group">
+                            <label for="recipient-name" class="control-label">Email Or Mobile</label>                       
+                            <input id="username" class="username form-control" tabindex="11" label="" div="" required="" autocomplete="off" name="username" ng-model="username" type="text" value="">                       
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="control-label">Password</label>
+                            <input id="passwordlogin" class="form-control password" tabindex="11" label="" div="" required="" autocomplete="off" name="password" type="password" value="">                      
+                        </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button id="login" class="btn btn-primary" onclick="beforeLogin();" ondblclick="javascript:void(0);" type="button">Login</button>               
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

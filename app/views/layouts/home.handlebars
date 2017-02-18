@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html xmlns:ng="http://angularjs.org">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="keywords" content="<% $keywords %>"/>
+        <meta name="description" content="">
+        <meta name="google-site-verification" content="LV1B8B00tuux_pQKW5EAQpZd1a74ndTYJ67PbXoHKFw" />
+        <title>{{ title }}</title> 
+
+        <link media="all" type="text/css" rel="stylesheet" href="vendors/css/bootstrap.min.css">        
+        <link media="all" type="text/css" rel="stylesheet" href="vendors/css/font-awesome.min.css">
+        <link media="all" type="text/css" rel="stylesheet" href="vendors/css/owl.carousel.css">
+        <link media="all" type="text/css" rel="stylesheet" href="lib/dropzone.css">        
+        <link rel="stylesheet" type="text/css" href="vendors/css/fileinput.min.css">
+        <link media="all" type="text/css" rel="stylesheet" href="vendors/css/style.css">
+        
+        <!--<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>-->
+    </head>
+    <body ng-controller="HomeController">
+
+        <!--Header Start-->
+        <div class="header pad10top pad10bot">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-3 col-md-3 logoPanel">                    
+                        <a href="/#!/"><img src="vendors/img/logo.png" width="100%" height="75" /></a>                   
+                    </div>
+
+                    <div class="col-sm-9 col-md-9">
+                        <div class="topLinks">
+                            {{#if user }}                            
+                                <div class="col-sm-8 col-md-8">                                
+                                </div>
+                                <div class="col-sm-4 col-md-4">
+                                    <div onclick="showUserMenu();">Welcome {{ userName }}</div>
+                                    <ul id="drop_down_menu_user" style="display: none;">                                
+                                        <ul class="drop_down_menu_user  col-sm-3 col-md-3" >
+                                            <li><a href="/user/profile"><i class="fa fa-user"></i>Profile</a></li>
+                                            {{#if user.designationId}}
+                                                <li><a href="<% URL::to('/master/setting'); %>"><i class="fa fa-cog"></i>Settings</a></li>
+                                            {{/if}}
+                                            <li><a href="<% URL::to('/user/logout'); %>"><i class="fa fa-power-off"></i>Logout</a></li>
+                                        </ul>
+                                    </ul>
+                                </div>
+                                
+                            {{else}}
+                                <ul class="list-inline">
+                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#signup"><i class="fa fa-user fa-fw"></i>Sign Up</a>
+                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#signin"><i class="fa fa-sign-in fa-fw"></i>Sign In</a>
+                                    <a  href="javascript:void(0);" data-toggle="modal" data-target="#forgotpwd"><i class="fa fa-lock fa-fw"></i>Forgot Password?</a>
+                                </ul>
+                            {{/if}}              
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 col-md-3 xsMargin">                                
+                                <input type-head-city placeholder="Type your city name" class="form-control" ng-model="searchCity" city-id="cityId" city-name="cityName" type="text">
+                            </div>
+
+                            <div class="col-sm-7 col-md-7 xsMargin">
+                                <div class="input-group">  
+                                    <input type-head-ad placeholder="Search your items" class="form-control" ng-model="searchAdd" ad-id="adId" ad-title="adTitle" type="text">
+
+                                    <span class="input-group-btn">
+                                    <button class="btn btn-success search_bt" type="button" onclick="getSearchAddList();"><i class="fa fa-search"></i> SEARCH</button>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2 col-md-2">
+                                <a id="postAd" href="/#!/choosecategory">
+                                    <button class="btn btn-warning btn-block postAddBtn" type="button">
+                                        <i class="fa fa-hand-o-right"></i> POST ADD
+                                    </button>
+                                </a>
+                            </div>
+                        </div>                       
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Header End-->
+
+
+
+        <div class="container pad20top pad20bot">
+            <div class="row">
+                {{{body}}}              
+            </div>
+        </div>
+        
+
+
+        <!--Footer Start-->
+        <div class="footer pad10top pad10bot">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-7 col-md-7">
+                        <ul class="list-inline">
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Listing Policy</a></li>
+                            <li><a href="#">Terms of use</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Sitemap</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Help</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-sm-5 col-md-5 copyright">
+                        Copyright &copy; 2014 <span>Bazarplanet</span>, All Rights Reserved
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Footer End-->
+
+
+
+        <div class="modal fade" id="signup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Sign Up</h4>
+                    </div>
+                    <div class="modal-body">
+                        <% Form::open(array('url'=>'users/signin','id'=>'form-register')) %>
+                            <div class="form-group">
+                                <label for="recipient-name" class="control-label">Are you an</label>                        
+                                <% Form::radio('user_type', 'Indivisual',array('class'=>'radMarLft10','class'=>'form-control')) %> Indivisual
+                                <% Form::radio('user_type', 'Business',array('class'=>'radMarLft10','class'=>'form-control')) %> Business                                             
+                                <div class="error-message">
+                                    <?php if(isset($radioError) && $radioError != '') echo $radioError; ?>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text" class="control-label">Email:</label>
+                                <% Form::text('email','',array('id'=>'email','class'=> 'form-control','tabindex'=>'11','label'=>false,'div'=>false,'required'=>false,'autocomplete'=>'off')) %>                     
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text" class="control-label">Password:</label>
+                                <% Form::password('password',array('id'=>'passwordlogin','class'=> 'form-control','tabindex'=>'11','label'=>false,'div'=>false,'required'=>false,'autocomplete'=>'off')) %>                     
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text" class="control-label">Mobile No:</label>
+                                <% Form::text('mobile_number','',array('id'=>'mobile_number','class'=> 'form-control','tabindex'=>'11','label'=>false,'div'=>false,'required'=>false,'autocomplete'=>'off','maxlength'=>'10')) %>                       
+                            </div>
+                            <div class="form-group">                        
+                                <% Form::checkbox('user_age', 'remember') %> I confirm that I am 18 years or older                      
+                            </div>
+                        <% Form::close() %>
+                    </div>
+                    <div class="modal-footer">
+                        <% Form::button('Submit',array('id'=>'signinBtn','class'=>'btn btn-primary','onclick'=>'signUpUser();','ondblclick' => 'javascript:void(0);')) %>               
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="signin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Sign In</h4>
+                    </div>
+                    <div class="modal-body">
+                        <% Form::open(array('url'=>'users/signin','id'=>'form-login')) %>
+                            <input type="hidden" name="otherMsg" class="otherMsg"/>
+                            <div class="form-group">
+                                <label for="recipient-name" class="control-label">Email Or Mobile</label>                       
+                                <% Form::text('username','',array('id'=>'username','class'=> 'username form-control','tabindex'=>'11','label'=>false,'div'=>false,'required'=>false,'autocomplete'=>'off')) %>                      
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text" class="control-label">Password</label>
+                                <% Form::password('password',array('id'=>'passwordlogin','class'=> 'form-control password','tabindex'=>'11','label'=>false,'div'=>false,'required'=>false,'autocomplete'=>'off')) %>                        
+                            </div>
+                        <% Form::close() %>
+                    </div>
+                    <div class="modal-footer">
+                        <% Form::button('Login',array('id'=>'login','class'=>'btn btn-primary','onclick'=>'beforeLogin();','ondblclick' => 'javascript:void(0);')) %>               
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="forgotpwd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Get back your password</h4>
+                    </div>
+                    <div class="modal-body">
+                        <% Form::open(array('url'=>'users/signin','id'=>'form-forgot')) %>
+                            <div class="form-group text-none text-center text-success">
+                                <h4>We have sent you a email to reset password.</h4>
+                            </div>
+                            <input type="hidden" name="otherMsg" class="otherMsg"/>
+                            <div class="form-group">
+                                <label for="recipient-name" class="control-label">Email</label>                     
+                                <% Form::text('email','',array('id'=>'emalForgot','class'=> 'form-control','tabindex'=>'11','label'=>false,'div'=>false,'required'=>false,'autocomplete'=>'off')) %>                        
+                            </div>
+                        <% Form::close() %>
+                    </div>
+                    <div class="modal-footer">
+                        <% Form::button('Submit',array('id'=>'forgotBtn','class'=>'btn btn-primary','onclick'=>'sendResetPasswordLink();','ondblclick' => 'javascript:void(0);')) %>                
+                    </div>
+                </div>
+            </div>
+        </div>  
+        
+        <script type="text/javascript" src="vendors/js/jquery/jquery-1.9.1.js"></script>        
+        <script type="text/javascript" src="vendors/js/bootstrap.min.js"></script>        
+        <script type="text/javascript" src="vendors/js/owl.carousel.min.js"></script>
+        <script type="text/javascript" src="vendors/js/typehead.js"></script>
+        <script type="text/javascript" src="vendors/js/fileinput.min.js"></script>
+        <script type="text/javascript" src="vendors/js/jquery.nicescroll.min.js"></script>
+        <script type="text/javascript" src="/lib/socket.io.js"></script>
+        <script type="text/javascript" src="/lib/dropzone.js"></script>
+
+        <script type="text/javascript" src="/lib/angular/angular.js"></script>
+        <script type="text/javascript" src="/lib/angular-route/angular-route.js"></script>
+        <script type="text/javascript" src="/lib/angular-resource/angular-resource.js"></script>
+        <script src="/lib/angular-animate/angular-animate.js"></script>
+        <script src="/lib/angular-touch/angular-touch.min.js"></script>
+
+        <script type="text/javascript" src="/articles/articles.client.module.js"></script>
+        <script type="text/javascript" src="/articles/controllers/articles.client.controller.js"></script>
+        <script type="text/javascript" src="/articles/services/articles.client.service.js"></script>
+        <script type="text/javascript" src="/articles/config/articles.client.routes.js"></script>       
+        
+        <script type="text/javascript" src="/ad/ad.client.module.js"></script>
+        <script type="text/javascript" src="/ad/controllers/ad.client.controller.js"></script>
+        <script type="text/javascript" src="/ad/services/ad.client.service.js"></script>
+        <script type="text/javascript" src="/ad/config/ad.client.routes.js"></script>        
+        
+        <script type="text/javascript" src="/home/home.client.module.js"></script>
+        <script type="text/javascript" src="/home/services/home.client.service.js"></script>
+        <script type="text/javascript" src="/home/controllers/home.client.controller.js"></script>
+        <script type="text/javascript" src="/home/config/home.client.routes.js"></script>
+        
+        <script type="text/javascript" src="/chat/chat.client.module.js"></script>
+        <script type="text/javascript" src="/chat/services/socket.client.service.js"></script>
+        <script type="text/javascript" src="/chat/controllers/chat.client.controller.js"></script>
+        <script type="text/javascript" src="/chat/config/chat.client.routes.js"></script>
+       
+        <script type="text/javascript" src="/application.js"></script>  
+        
+    </body>
+</html>

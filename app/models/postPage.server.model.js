@@ -23,7 +23,7 @@ var PostPageSchema         =   new Schema(
         },
         optionValue: {
             type: String,
-            required: 'This field is required'
+            //required: 'This field is required'
         },
         validationRule: {
             type: String,

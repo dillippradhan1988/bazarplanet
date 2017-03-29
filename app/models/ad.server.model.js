@@ -46,7 +46,7 @@ var AdSchema                    =   new Schema(
         },
         description: {
             type: String,
-            required: 'This field is required.'
+            //required: 'This field is required.'
         },
         price: {
             type: Number,

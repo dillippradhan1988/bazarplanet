@@ -3,10 +3,17 @@ var Schema                      =   mongoose.Schema;
 
 var NonTechnicalJobSchema       =   new Schema(
     {        
+        _id: {
+            type: Number,
+            unique: true,
+            required: true,
+            trim: true
+        }, 
         adId: {
-            type: Schema.Types.ObjectId,
+            type: Number,
             ref: 'Ad',
-            required: 'Ad id cannot be blank.'
+            required: true,
+            trim: true
         },
         adType: {
             type: String,

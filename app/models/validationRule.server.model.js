@@ -11,7 +11,7 @@ var ValidationRuleSchema         =   new Schema(
             type: String,
             required: 'Rule name cannot be blank'
         }, 
-        IsActive: {
+        isActive: {
             type: Boolean,
             required: 'Status cannot be blank'
         },

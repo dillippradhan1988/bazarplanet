@@ -22,5 +22,10 @@ module.exports              =   function(){
     require('../app/models/categoryAlert.server.model');
     require('../app/models/subCategoryModel.server.model');
     require('../app/models/mobilePhone.server.model');
+    require('../app/models/inputType.server.model');
+    require('../app/models/validationRule.server.model');
+    require('../app/models/adFavorite.server.model');
+    require('../app/models/adReply.server.model');
+    require('../app/models/adVisitors.server.model');
     return db;
 };
